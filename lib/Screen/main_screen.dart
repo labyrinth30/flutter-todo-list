@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_unnecessary_containers
 
 import 'package:flutter/material.dart';
-import 'package:todo_list_gdsc/Screen/todo_create_screen.dart';
+// import 'package:todo_list_gdsc/Screen/todo_create_screen.dart';
 import 'package:todo_list_gdsc/Util/todo_sqlite_database.dart';
 import 'package:todo_list_gdsc/Model/todo.dart';
 
@@ -9,17 +9,17 @@ class MainScreen extends StatefulWidget {
   const MainScreen({
     super.key,
     required this.title,
-    required this.databaseProvider,
+    required this.database,
   });
 
   final String title;
-  final TodoSQLiteDatabase databaseProvider;
+  final TodoSQLiteDatabase database;
 
   @override
-  State<MainScreen> createState() => _MaterialMain();
+  State<MainScreen> createState() => _MainScreen();
 }
 
-class _MaterialMain extends State<MainScreen> {
+class _MainScreen extends State<MainScreen> {
   Future<List<Todo>>? todoList;
 
   @override
@@ -100,7 +100,7 @@ class _MaterialMain extends State<MainScreen> {
   }
 
   Future<List<Todo>> _getTodos() {
-    return widget.databaseProvider.getTodos();
+    return widget.database.getTodos();
   }
 
   Future<void> _createTodo() async {
@@ -114,7 +114,7 @@ class _MaterialMain extends State<MainScreen> {
         as Todo?; // 생성 후 반환된 Todo를 명시
     if (todo != null) {
       // 반환된 Todo가 null이 아닌 경우에만 실행될 코드
-      widget.databaseProvider.insertTodo(todo);
+      widget.database.insertTodo(todo);
       setState(() {
         todoList = _getTodos();
       });
@@ -181,7 +181,7 @@ class _MaterialMain extends State<MainScreen> {
 
     if (res != null) {
       Todo updatedTodo = res;
-      widget.databaseProvider.updateTodo(updatedTodo);
+      widget.database.updateTodo(updatedTodo);
       setState(
         () {
           todoList = _getTodos();
@@ -216,7 +216,7 @@ class _MaterialMain extends State<MainScreen> {
     );
 
     if (res != null && res) {
-      await widget.databaseProvider.deleteTodo(todo);
+      await widget.database.deleteTodo(todo);
       setState(
         () {
           todoList = _getTodos();

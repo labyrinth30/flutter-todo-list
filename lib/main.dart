@@ -12,7 +12,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TodoSQLiteDatabase databaseProvider = TodoSQLiteDatabase.getDatabase();
+    // 데이터베이스 프로바이더 생성
+    TodoSQLiteDatabase database = TodoSQLiteDatabase.getDatabase();
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -20,8 +22,9 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) =>
-            MainScreen(title: 'To Do List', databaseProvider: databaseProvider),
+        // 루트 경로 설정: MainScreen으로 이동
+        '/': (context) => MainScreen(title: 'To Do List', database: database),
+        // '/create' 경로 설정: TodoCreateScreen으로 이동
         '/create': (context) => const TodoCreateScreen(title: 'To Do Create'),
       },
     );
