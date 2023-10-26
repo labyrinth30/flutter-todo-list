@@ -1,13 +1,15 @@
 // ignore_for_file: avoid_unnecessary_containers
 
 import 'package:flutter/material.dart';
-import 'package:todo_list_gdsc/Model/order.dart';
 import 'package:todo_list_gdsc/Util/todo_sqlite_database.dart';
-import '../Model/todo.dart';
+import 'package:todo_list_gdsc/Model/todo.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen(
-      {super.key, required this.title, required this.databaseProvider});
+  const MainScreen({
+    super.key,
+    required this.title,
+    required this.databaseProvider,
+  });
   final String title;
   final TodoSQLiteDatabase databaseProvider;
 
@@ -18,29 +20,10 @@ class MainScreen extends StatefulWidget {
 class _MaterialMain extends State<MainScreen> {
   Future<List<Todo>>? todoList;
 
-  final List _strButtonList = [
-    orders[0],
-    orders[1],
-    orders[2],
-    orders[3],
-  ];
-  final List<DropdownMenuItem<String>> _dropdownMenuItemList =
-      List.empty(growable: true);
-  String? _strCurrentButton;
-
   @override
   void initState() {
     super.initState();
-    for (var str in _strButtonList) {
-      _dropdownMenuItemList.add(
-        DropdownMenuItem(
-          value: str.value.toString(),
-          child: Text(str.label),
-        ),
-      );
-    }
     todoList = _getTodos();
-    _strCurrentButton = _dropdownMenuItemList[0].value;
   }
 
   @override
@@ -102,19 +85,6 @@ class _MaterialMain extends State<MainScreen> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: DropdownButton(
-              items: _dropdownMenuItemList,
-              onChanged: (String? value) {
-                setState(() {
-                  _strCurrentButton = value;
-                  todoList = _getTodos();
-                });
-              },
-              value: _strCurrentButton,
-            ),
-          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -128,9 +98,7 @@ class _MaterialMain extends State<MainScreen> {
   }
 
   Future<List<Todo>> _getTodos() {
-    int orderBy =
-        int.parse(_strCurrentButton ?? '0'); // 드롭다운 메뉴에서 선택한 값을 가져옵니다.
-    return widget.databaseProvider.getTodos(orderBy);
+    return widget.databaseProvider.getTodos();
   }
 
   Future<void> _createTodo() async {
@@ -170,9 +138,11 @@ class _MaterialMain extends State<MainScreen> {
                       title: const Text("완료 여부"),
                       value: isChecked,
                       onChanged: (bool? value) {
-                        setDialogState(() {
-                          isChecked = value!;
-                        });
+                        setDialogState(
+                          () {
+                            isChecked = value!;
+                          },
+                        );
                       },
                     ),
                   ],

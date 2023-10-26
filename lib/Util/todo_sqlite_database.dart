@@ -56,25 +56,11 @@ class TodoSQLiteDatabase {
     );
   }
 
-  Future<List<Todo>> getTodos(int orderBy) async {
+  Future<List<Todo>> getTodos() async {
     Database database = await _getDatabase();
-    String orderByColumn = 'id '; // 기본 정렬 열
-
-    switch (orderBy) {
-      case 1:
-        orderByColumn = 'title'; // title 열을 기준으로 정렬
-        break;
-      case 2:
-        orderByColumn = 'title DESC'; // title 열을 기준으로 내림차순 정렬
-        break;
-      case 3:
-        orderByColumn = 'hasFinished DESC'; // hasFinished 열을 기준으로 내림차순 정렬
-        break;
-    }
 
     List<Map<String, dynamic>> result = await database.query(
       TODOS_TABLENAME,
-      orderBy: orderByColumn,
     );
 
     List<Todo> todoList = List.empty(growable: true);
@@ -93,6 +79,7 @@ class TodoSQLiteDatabase {
       where: "id = ?", // 어떤 todo를 업데이트할 것 인지
       whereArgs: [todo.id], // 업데이트할 todo의 id
     );
+    //await db.update('dogs', dog.toMap(), where: 'id = ?', whereArgs: [dog.id]);
   }
 
   // Todo 항목을 삭제하는 메서드
@@ -105,3 +92,4 @@ class TodoSQLiteDatabase {
     );
   }
 }
+// await db.delete('dogs', where: 'id = ?', whereArgs: [id]);

@@ -22,37 +22,41 @@ class _TodoCreate extends State<TodoCreateScreen> {
         title: Text(widget.title),
       ),
       body: Container(
-          child: Center(
-              child: Column(children: <Widget>[
-        Padding(
-            padding: const EdgeInsets.all(10),
-            child: TextField(
-              controller: _tecTitleController,
-              decoration: const InputDecoration(
-                labelText: "제목",
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: TextField(
+                    controller: _tecTitleController,
+                    decoration: const InputDecoration(
+                      labelText: "제목",
+                    ),
+                  )),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: TextField(
+                  controller: _tecContentController,
+                  decoration: const InputDecoration(
+                    labelText: "할일",
+                  ),
+                ),
               ),
-            )),
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: TextField(
-            controller: _tecContentController,
-            decoration: const InputDecoration(
-              labelText: "할일",
-            ),
+              ElevatedButton(
+                child: const Text("저장"),
+                onPressed: () {
+                  Todo todo = Todo(
+                    title: _tecTitleController.value.text,
+                    content: _tecContentController.value.text,
+                    hasFinished: 0,
+                  );
+                  Navigator.of(context).pop(todo);
+                },
+              )
+            ],
           ),
         ),
-        ElevatedButton(
-          child: const Text("저장"),
-          onPressed: () {
-            Todo todo = Todo(
-              title: _tecTitleController.value.text,
-              content: _tecContentController.value.text,
-              hasFinished: 0,
-            );
-            Navigator.of(context).pop(todo);
-          },
-        )
-      ]))),
+      ),
     );
   }
 }
