@@ -50,9 +50,9 @@ class _TodoCreate extends State<TodoCreateScreen> {
                     content: _tecContentController.value.text,
                     hasFinished: 0,
                   );
-                  Navigator.of(context).pop(todo);
+                  Navigator.of(context).pop(todo); // todo 객체를 반환하면서 이전 페이지로 돌아감
                 },
-              )
+              ),
             ],
           ),
         ),

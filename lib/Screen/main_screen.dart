@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_unnecessary_containers
 
 import 'package:flutter/material.dart';
+import 'package:todo_list_gdsc/Screen/todo_create_screen.dart';
 import 'package:todo_list_gdsc/Util/todo_sqlite_database.dart';
 import 'package:todo_list_gdsc/Model/todo.dart';
 
@@ -10,6 +11,7 @@ class MainScreen extends StatefulWidget {
     required this.title,
     required this.databaseProvider,
   });
+
   final String title;
   final TodoSQLiteDatabase databaseProvider;
 
@@ -102,7 +104,14 @@ class _MaterialMain extends State<MainScreen> {
   }
 
   Future<void> _createTodo() async {
-    Todo? todo = await Navigator.of(context).pushNamed('/create') as Todo?;
+    // Todo? todo = await Navigator.push(
+    //   context,
+    //   MaterialPageRoute( // MaterialPageRoute은 stateless widget을 route로 감싸서 widget을 screen 처럼 보이게 함
+    //     builder: ((context) => const TodoCreateScreen(title: 'To Do Create')),
+    //   ),
+    // ) as Todo?;
+    Todo? todo = await Navigator.of(context).pushNamed('/create')
+        as Todo?; // 생성 후 반환된 Todo를 명시
     if (todo != null) {
       // 반환된 Todo가 null이 아닌 경우에만 실행될 코드
       widget.databaseProvider.insertTodo(todo);
@@ -131,7 +140,7 @@ class _MaterialMain extends State<MainScreen> {
                     TextField(
                       controller: tecContentController,
                       decoration: const InputDecoration(
-                        labelText: "할일",
+                        labelText: "할 일",
                       ),
                     ),
                     CheckboxListTile(
@@ -156,7 +165,7 @@ class _MaterialMain extends State<MainScreen> {
               onPressed: () {
                 todo.content = tecContentController.value.text;
                 todo.hasFinished = isChecked ? 1 : 0;
-                Navigator.of(context).pop(todo);
+                Navigator.of(context).pop(todo); // 수정된 todo를 반환
               },
             ),
             ElevatedButton(
