@@ -56,37 +56,29 @@ class TodoSQLiteDatabase {
     );
   }
 
-  // 데이터베이스에서 모든 Todo 객체를 가져오는 비동기 메서드
   Future<List<Todo>> getTodos(int orderBy) async {
     Database database = await _getDatabase();
-    String orderByClause = '';
+    String orderByColumn = 'id '; // 기본 정렬 열
 
     switch (orderBy) {
-      case 0:
-        orderByClause = 'id ASC';
-        break;
       case 1:
-        orderByClause = 'title ASC'; // title 열을 기준으로 오름차순 정렬
+        orderByColumn = 'title'; // title 열을 기준으로 정렬
         break;
       case 2:
-        orderByClause = 'title DESC'; // title 열을 기준으로 내림차순 정렬
+        orderByColumn = 'title DESC'; // title 열을 기준으로 내림차순 정렬
         break;
       case 3:
-        orderByClause = 'hasFinished DESC'; // title 열을 기준으로 내림차순 정렬
+        orderByColumn = 'hasFinished DESC'; // hasFinished 열을 기준으로 내림차순 정렬
         break;
-      default:
-        // 기본 정렬 순서 (예: id를 기준으로 ASC)
-        orderByClause = 'id ASC';
     }
 
-    String dynamicQuery = '''
-    SELECT * FROM $TODOS_TABLENAME
-    ORDER BY $orderByClause
-    ''';
+    List<Map<String, dynamic>> result = await database.query(
+      TODOS_TABLENAME,
+      orderBy: orderByColumn,
+    );
 
-    var maps = await database.rawQuery(dynamicQuery);
     List<Todo> todoList = List.empty(growable: true);
-    for (var todo in maps) {
+    for (var todo in result) {
       todoList.add(Todo.fromMap(todo));
     }
     return todoList;
