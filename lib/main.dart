@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/Util/todo_sqlite_database_provider.dart';
-import 'package:todo_list/todo_create.dart';
-import 'package:todo_list/todo_finished.dart';
+import 'package:todo_list/Util/dog_sqlite_database_provider.dart';
+import 'package:todo_list/dog_create.dart';
 import 'material_main.dart';
 
 void main() {
@@ -13,19 +12,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TodoSQLiteDatabaseProvider databaseProvider =
-        TodoSQLiteDatabaseProvider.getDatabaseProvider();
+    DogSQLiteDatabaseProvider databaseProvider =
+        DogSQLiteDatabaseProvider.getDatabaseProvider();
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: const Color.fromRGBO(0, 0, 0, 1),
       ),
       initialRoute: '/',
       routes: {
         '/': (context) => MaterialMain(
-            title: 'To Do List', databaseProvider: databaseProvider),
-        '/create': (context) => const TodoCreate(title: 'To Do Create'),
-        '/finished': (context) => const TodoFinished(title: 'To Do Finished'),
+              title: 'Dog List',
+              databaseProvider: databaseProvider,
+            ),
+        '/create': (context) => const DogCreate(title: 'Dog Create'),
       },
     );
   }
