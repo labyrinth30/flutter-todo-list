@@ -21,7 +21,7 @@ class _MaterialMain extends State<MaterialMain> {
   @override
   void initState() {
     super.initState();
-    dogList = _getdogs();
+    dogList = _getDogs();
   }
 
   @override
