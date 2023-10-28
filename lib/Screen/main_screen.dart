@@ -59,21 +59,50 @@ class _MainScreen extends State<MainScreen> {
                         },
                         itemBuilder: (context, index) {
                           Todo todo = (snapshot.data as List<Todo>)[index];
-                          return ListTile(
-                            title: Text(todo.title!,
-                                style: const TextStyle(fontSize: 16)),
-                            subtitle: Column(
-                              children: <Widget>[
-                                Text(todo.content!),
-                                Text(todo.hasFinished == 1 ? "완료" : "미완료"),
-                              ],
-                            ),
-                            onTap: () {
-                              _updateTodo(todo);
-                            },
-                            onLongPress: () {
+                          return Dismissible(
+                            // 스와이프 기능
+                            key: Key(todo.id.toString()), // 식별자는 dog의 id
+                            direction:
+                                DismissDirection.endToStart, // 방향은 우측에서 왼쪽으로
+                            onDismissed: (direction) {
+                              // 스와이프가 완료되면 호출
                               _deleteTodo(todo);
                             },
+                            background: Container(
+                              // DogCard 뒤에 빨간 배경을 추가
+                              color: Colors.red,
+                              padding: const EdgeInsets.all(16),
+                              alignment: Alignment.centerRight, // 오른쪽 정렬 추가
+                              child: const Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  // 화면 전체를 차지하도록 확장
+                                  child: ListTile(
+                                    title: Text(todo.title!,
+                                        style: const TextStyle(fontSize: 16)),
+                                    subtitle: Column(
+                                      children: <Widget>[
+                                        Text(todo.content!),
+                                        Text(todo.hasFinished == 1
+                                            ? "완료"
+                                            : "미완료"),
+                                      ],
+                                    ),
+                                    onTap: () {
+                                      _updateTodo(todo);
+                                    },
+                                    onLongPress: () {
+                                      _deleteTodo(todo);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                           );
                         },
                       );
@@ -95,7 +124,7 @@ class _MainScreen extends State<MainScreen> {
           _createTodo();
         },
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 
