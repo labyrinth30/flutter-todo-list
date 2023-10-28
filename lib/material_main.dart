@@ -159,7 +159,7 @@ class _MaterialMain extends State<MaterialMain> {
               );
             },
           ),
-          actions: <Widget>[
+          actions: [
             ElevatedButton(
               child: const Text("수정"),
               onPressed: () {
@@ -180,7 +180,7 @@ class _MaterialMain extends State<MaterialMain> {
 
     if (res != null) {
       Dog updatedDog = res;
-      widget.databaseProvider.updateTodo(updatedDog);
+      widget.databaseProvider.updateDog(updatedDog);
       setState(
         () {
           dogList = _getdogs();
