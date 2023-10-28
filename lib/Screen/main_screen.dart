@@ -1,9 +1,11 @@
 // ignore_for_file: avoid_unnecessary_containers
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 // import 'package:todo_list_gdsc/Screen/todo_create_screen.dart';
 import 'package:todo_list_gdsc/Util/todo_sqlite_database.dart';
 import 'package:todo_list_gdsc/Model/todo.dart';
+import 'package:todo_list_gdsc/theme/theme.provider.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({
@@ -31,8 +33,20 @@ class _MainScreen extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title: Text(widget.title),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+            },
+            icon: const Icon(Icons.brightness_4),
+          ),
+        ],
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        title: Text(
+          widget.title,
+        ),
       ),
       body: Column(
         children: [
@@ -119,10 +133,11 @@ class _MainScreen extends State<MainScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         onPressed: () {
           _createTodo();
         },
+        child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
