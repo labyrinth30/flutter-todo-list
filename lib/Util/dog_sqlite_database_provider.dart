@@ -64,7 +64,7 @@ class DogSQLiteDatabaseProvider {
     return dogList;
   }
 
-  // Todo 항목을 업데이트하는 메서드
+  // Dog 항목을 업데이트하는 메서드
   Future<void> updateDog(Dog dog) async {
     Database database = await _getDatabase();
     database.update(
@@ -75,7 +75,7 @@ class DogSQLiteDatabaseProvider {
     );
   }
 
-  // Todo 항목을 삭제하는 메서드
+  // Dog 항목을 삭제하는 메서드
   Future<void> deleteDog(Dog dog) async {
     Database database = await _getDatabase();
     database.delete(DOGS_TABLENAME, where: 'id = ?', whereArgs: [dog.id]);
