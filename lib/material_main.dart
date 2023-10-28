@@ -183,7 +183,7 @@ class _MaterialMain extends State<MaterialMain> {
       widget.databaseProvider.updateDog(updatedDog);
       setState(
         () {
-          dogList = _getdogs();
+          dogList = _getDogs();
         },
       );
     }
@@ -218,12 +218,12 @@ class _MaterialMain extends State<MaterialMain> {
       await widget.databaseProvider.deleteDog(dog);
       setState(
         () {
-          dogList = _getdogs();
+          dogList = _getDogs();
         },
       );
     } else {
       setState(() {
-        dogList = _getdogs();
+        dogList = _getDogs();
       });
     }
   }
