@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_unnecessary_containers
 
 import 'package:flutter/material.dart';
+import 'package:todo_list/Widget/dog_card.dart';
 import 'Model/dog.dart';
 import 'Util/dog_sqlite_database_provider.dart';
 
@@ -35,56 +36,63 @@ class _MaterialMain extends State<MaterialMain> {
             future: dogList,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
+                // 연결 상태가 로딩중이면
+                return const CircularProgressIndicator(); // 로딩 표시기 표시
               } else if (snapshot.connectionState == ConnectionState.done) {
+                // 연결 완료 상태이면
                 if (snapshot.hasError) {
+                  // dogList에 문제가 있으면
                   return Text("Error: ${snapshot.error}");
                 } else if (snapshot.hasData) {
+                  // dogList를 올바르게 가져왔다면
                   return ListView.separated(
-                    itemCount: (snapshot.data)?.length ?? 0,
+                    itemCount:
+                        (snapshot.data as List<Dog>).length, // 형 변환 후 length 사용
                     separatorBuilder: (context, index) {
-                      return const SizedBox(
-                        height: 2,
+                      return Divider(
+                        color: Colors.black.withOpacity(0.8),
+                        thickness: 1,
+                        height: 1,
                       );
                     },
                     itemBuilder: (context, index) {
-                      final List<Dog>? dogList = snapshot.data;
-                      if (dogList != null && index < dogList.length) {
-                        final Dog dog = dogList[index];
-                        return GestureDetector(
-                            onTap: () => _updateDog(
-                                  dog,
-                                ),
-                            onLongPress: () {
-                              _deleteDog(dog);
-                            },
-                            child: Card(
-                              elevation: 3, // 그림자 추가
-                              margin: const EdgeInsets.all(10), // 여백 추가
-                              child: Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      dog.name!,
-                                      style: const TextStyle(
-                                        fontSize: 18, // 더 큰 폰트 크기
-                                        fontWeight: FontWeight.bold, // 굵은 글꼴
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8), // 간격 추가
-                                    Text(
-                                      '나이: ${dog.age}세', // 나이 정보 추가
-                                      style: const TextStyle(fontSize: 14),
-                                    ),
-                                  ],
-                                ),
+                      Dog dog = (snapshot.data as List<Dog>)[index];
+                      return GestureDetector(
+                        onTap: () => _updateDog(
+                          dog,
+                        ),
+                        onLongPress: () {
+                          _deleteDog(dog);
+                        },
+                        child: Dismissible(
+                          // 스와이프 기능
+                          key: Key(dog.id.toString()), // 식별자는 dog의 id
+                          direction:
+                              DismissDirection.endToStart, // 방향은 우측에서 왼쪽으로
+                          onDismissed: (direction) {
+                            // 스와이프가 완료되면 호출
+                            _deleteDog(dog);
+                          },
+                          background: Container(
+                            // DogCard 뒤에 빨간 배경을 추가
+                            color: Colors.red,
+                            padding: const EdgeInsets.all(16),
+                            alignment: Alignment.centerRight, // 오른쪽 정렬 추가
+                            child: const Icon(
+                              Icons.delete,
+                              color: Colors.white,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                // 화면 전체를 차지하도록 확장
+                                child: DogCard(dog: dog),
                               ),
-                            ));
-                      }
-                      return const SizedBox
-                          .shrink(); // 이 경우 빈 상자를 반환하여 아무것도 표시하지 않음
+                            ],
+                          ),
+                        ),
+                      );
                     },
                   );
                 } else {
@@ -151,7 +159,7 @@ class _MaterialMain extends State<MaterialMain> {
               );
             },
           ),
-          actions: <Widget>[
+          actions: [
             ElevatedButton(
               child: const Text("수정"),
               onPressed: () {
@@ -172,7 +180,7 @@ class _MaterialMain extends State<MaterialMain> {
 
     if (res != null) {
       Dog updatedDog = res;
-      widget.databaseProvider.updateTodo(updatedDog);
+      widget.databaseProvider.updateDog(updatedDog);
       setState(
         () {
           dogList = _getdogs();
@@ -213,6 +221,10 @@ class _MaterialMain extends State<MaterialMain> {
           dogList = _getdogs();
         },
       );
+    } else {
+      setState(() {
+        dogList = _getdogs();
+      });
     }
   }
 }

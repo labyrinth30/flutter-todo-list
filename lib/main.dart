@@ -17,8 +17,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: const Color.fromRGBO(0, 0, 0, 1),
+      theme: ThemeData(
+        primarySwatch: Colors.orange,
       ),
       initialRoute: '/',
       routes: {

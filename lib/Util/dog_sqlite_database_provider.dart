@@ -17,7 +17,7 @@ class DogSQLiteDatabaseProvider {
   // 생성자
   DogSQLiteDatabaseProvider._();
 
-  // 데이터베이스 제공자의 인스턴스를 반환하는 정적 메서드
+  // 클래스의 유일한 인스턴스를 반환하는 정적 메서드
   static DogSQLiteDatabaseProvider getDatabaseProvider() => databaseProvider;
 
   // 데이터베이스를 가져오는 비동기 메서드
@@ -65,7 +65,7 @@ class DogSQLiteDatabaseProvider {
   }
 
   // Todo 항목을 업데이트하는 메서드
-  Future<void> updateTodo(Dog dog) async {
+  Future<void> updateDog(Dog dog) async {
     Database database = await _getDatabase();
     database.update(
       DOGS_TABLENAME,
