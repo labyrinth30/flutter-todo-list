@@ -109,25 +109,25 @@ class _MaterialMain extends State<MaterialMain> {
         backgroundColor: Colors.amber,
         child: const Icon(Icons.add),
         onPressed: () {
-          _createdogs();
+          _createDogs();
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 
-  Future<List<Dog>> _getdogs() {
+  Future<List<Dog>> _getDogs() {
     return widget.databaseProvider.getDogs();
   }
 
-  Future<void> _createdogs() async {
+  Future<void> _createDogs() async {
     Dog? dog = await Navigator.of(context).pushNamed('/create') as Dog?;
     if (dog != null) {
       // 반환된 dog가 null이 아닌 경우에만 실행될 코드
       widget.databaseProvider.insertDog(dog);
       setState(
         () {
-          dogList = _getdogs();
+          dogList = _getDogs();
         },
       );
     }
